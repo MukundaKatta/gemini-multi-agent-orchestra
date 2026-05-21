@@ -1,7 +1,7 @@
-"""Generate the lablab submission cover image (1200x675, 16:9 thumb).
+"""Generate the DoraHacks submission cover image (1200x675, 16:9 thumb).
 
-Reuses the same palette + typography as the intro slide so the cover and
-the demo video read as one set.
+Reuses the same palette + typography as the intro slide so the cover
+and the demo video read as one set. Multi-agent purple accent.
 """
 
 from __future__ import annotations
@@ -14,8 +14,8 @@ from PIL import Image, ImageDraw, ImageFont
 W, H = 1200, 675
 FG = "#0f172a"
 FG_MUTED = "#475569"
-ACCENT = "#f59e0b"
-ACCENT_2 = "#b45309"
+ACCENT = "#8b5cf6"      # multi-agent purple
+ACCENT_2 = "#6d28d9"
 BG = "#ffffff"
 PANEL = "#f8fafc"
 
@@ -43,28 +43,28 @@ def main():
     d.text((W - 200, H - 32), "Apache 2.0", font=font(16), fill=FG_MUTED)
 
     # Title block
-    d.text((60, 100), "gemini-multi-agent-orchestra", font=font(72), fill=FG)
+    d.text((60, 100), "gemini-multi-agent-orchestra", font=font(58), fill=FG)
     d.rectangle([(60, 200), (220, 208)], fill=ACCENT)
 
     d.text((60, 240),
-           "Plain-English research questions",
+           "3-agent supervisor on Vertex AI Agent Builder.",
            font=font(28), fill=FG_MUTED)
     d.text((60, 280),
-           "to live web data with verbatim citations.",
+           "Researcher · Analyst · Writer · verbatim handoffs.",
            font=font(28), fill=FG_MUTED)
 
     d.text((60, 380),
-           "Gemini 2.5 ADK + Bright Data MCP",
-           font=font(24, mono=True), fill=ACCENT_2)
+           "ADK SequentialAgent + Gemini 2.5 + Bright Data MCP",
+           font=font(22, mono=True), fill=ACCENT_2)
     d.text((60, 420),
-           "(SERP API + Web Unlocker + structured datasets)",
-           font=font(20), fill=FG_MUTED)
+           "(search_engine · scrape_page · score_source · web_data_lookup)",
+           font=font(18), fill=FG_MUTED)
 
     d.text((60, 520),
-           "Bright Data AI Agents Web Data Hackathon",
+           "DoraHacks Agents Without Masters",
            font=font(22), fill=FG)
     d.text((60, 552),
-           "lablab.ai · May 25 to 31, 2026",
+           "$25K prize pool · target deadline Jun 16 2026",
            font=font(20), fill=FG_MUTED)
 
     out = Path("/Users/ubl/gemini-multi-agent-orchestra/.video-build/cover.png")

@@ -1,11 +1,13 @@
-"""Drive the deployed gemini-multi-agent-orchestra Cloud Run app through Playwright,
-record real screen footage of the agent functioning, save as MP4.
+"""Drive the deployed gemini-multi-agent-orchestra Cloud Run app through
+Playwright, record real screen footage of the 3-agent orchestra
+functioning, save as MP4.
 
 Output: ~60-90s WebM/MP4 showing the actual deployed Streamlit dashboard
-loading, accepting a research question, walking the Bright Data MCP
-tools, and rendering the verbatim labeled-section answer. This is the
-"footage that shows the Project functioning on the platform(s) for which
-it was built" that lablab/Devpost moderators want.
+loading, accepting a research question, walking the researcher → analyst
+→ writer orchestra through the Bright Data MCP tools, and rendering the
+verbatim labeled-section answer. This is the "footage that shows the
+Project functioning on the platform(s) for which it was built" that
+DoraHacks judges expect.
 """
 
 from __future__ import annotations
@@ -45,7 +47,10 @@ def main() -> int:
         time.sleep(2)
 
         # Make sure the sidebar question is what the demo narrates.
-        question = "Anthropic Claude latest release notes 2026"
+        question = (
+            "Rank the top 3 AI coding agents launched in May 2026 by "
+            "adoption and cite their announcement URLs verbatim."
+        )
         # The Streamlit textarea is the first textarea on the page.
         textareas = page.locator("textarea")
         if textareas.count() > 0:
@@ -53,19 +58,21 @@ def main() -> int:
             print(f"    question set: {question[:60]}...")
             time.sleep(1.5)
 
-        # Click "Run research" — Streamlit's buttons have a wrapping kind=primary.
-        print("[3/4] clicking Run research and waiting for the agent response...")
-        page.locator("button", has_text="Run research").first.click()
-        # Wait for the spinner to disappear (means the agent finished).
-        # Streamlit shows "Running Vertex AI Gemini..." while busy.
-        page.wait_for_selector("text=Running Vertex AI", timeout=120_000)
-        print("    agent started running")
-        # Now wait for that text to go away (agent done).
-        page.wait_for_selector("text=Running Vertex AI", state="detached", timeout=300_000)
-        print("    agent finished")
-        # Wait for the final NEXT STEP label to confirm full render.
+        # Click "Run orchestra" — Streamlit's buttons have a wrapping
+        # kind=primary.
+        print("[3/4] clicking Run orchestra and waiting for the writer's "
+              "response...")
+        page.locator("button", has_text="Run orchestra").first.click()
+        # Wait for the spinner to appear (means the orchestra started).
+        page.wait_for_selector("text=Running the orchestra", timeout=120_000)
+        print("    orchestra started running")
+        # Wait for that text to disappear (writer done).
+        page.wait_for_selector("text=Running the orchestra",
+                               state="detached", timeout=300_000)
+        print("    orchestra finished")
+        # Wait for the final HANDOFF TRACE label to confirm full render.
         try:
-            page.wait_for_selector("text=NEXT STEP", timeout=60_000)
+            page.wait_for_selector("text=HANDOFF TRACE", timeout=60_000)
         except Exception:
             page.wait_for_selector("text=ANSWER", timeout=30_000)
         print("    final answer rendered")

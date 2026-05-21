@@ -2,14 +2,15 @@
 
 Composition:
   - ~14s intro slide with TTS narration
-  - ~32s real Cloud Run footage (already captured at .video-build/real_footage.mp4)
+  - ~32s real Cloud Run footage (already captured at
+    .video-build/real_footage.mp4)
   - ~11s outro slide with TTS narration
 
-Total ≈ 60s, well under the 3-minute lablab submission limit. Centerpiece
-is real footage of the deployed Streamlit dashboard answering "Anthropic
-Claude latest release notes 2026" by walking the Bright Data MCP tools
-(SERP API + Web Unlocker scrape + LinkedIn dataset lookup) and citing
-verbatim quotes back from the unlocked Anthropic pages.
+Total ≈ 60s, well under the DoraHacks submission limits. Centerpiece is
+real footage of the deployed Streamlit dashboard answering "Rank the
+top 3 AI coding agents launched in May 2026 by adoption" by walking the
+researcher → analyst → writer orchestra through the Bright Data MCP
+tools and citing verbatim quotes back from the scraped vendor pages.
 """
 
 from __future__ import annotations
@@ -25,8 +26,8 @@ from PIL import Image, ImageDraw, ImageFont
 W, H = 1920, 1080
 FG = "#0f172a"
 FG_MUTED = "#475569"
-ACCENT = "#f59e0b"          # Bright Data amber
-ACCENT_2 = "#b45309"
+ACCENT = "#8b5cf6"          # multi-agent purple (DoraHacks framing)
+ACCENT_2 = "#6d28d9"
 BG = "#ffffff"
 PANEL = "#f8fafc"
 
@@ -52,22 +53,22 @@ def draw_intro(img, d):
     d.text((96, 220), "gemini-multi-agent-orchestra", font=font(108), fill=FG)
     d.rectangle([(96, 360), (340, 372)], fill=ACCENT)
     d.text((96, 410),
-           "Plain-English research questions → SERP → unlock → cite,",
+           "3-agent supervisor on Vertex AI Agent Builder.",
            font=font(40), fill=FG_MUTED)
     d.text((96, 470),
-           "with verbatim quotes straight from the live web.",
+           "Researcher, analyst, writer. Verbatim handoffs.",
            font=font(40), fill=FG_MUTED)
     d.text((96, 600),
-           "Bright Data AI Agents Web Data Hackathon",
+           "DoraHacks Agents Without Masters",
            font=font(32), fill=FG)
     d.text((96, 645),
-           "· lablab.ai · May 25 to 31, 2026 ·",
+           "· $25K prize pool · target deadline Jun 16 2026 ·",
            font=font(32), fill=FG_MUTED)
     d.text((96, 760),
            "What follows is real footage of the deployed",
            font=font(28, italic=True), fill=FG_MUTED)
     d.text((96, 800),
-           "Cloud Run dashboard answering a live question.",
+           "Cloud Run dashboard running the orchestra live.",
            font=font(28, italic=True), fill=FG_MUTED)
 
 
@@ -88,13 +89,13 @@ def draw_outro(img, d):
            "+ Gemini 2.5 Flash on Vertex AI",
            font=font(32), fill=FG_MUTED)
     d.text((96, 640),
-           "+ Bright Data MCP (SERP, Web Unlocker, datasets)",
+           "+ Bright Data MCP shape (SERP, scrape, score, datasets)",
            font=font(32), fill=FG_MUTED)
     d.text((96, 760),
-           "Quotes in this demo are copied byte-for-byte from",
+           "Researcher quotes survive byte-for-byte through",
            font=font(26, italic=True), fill=FG_MUTED)
     d.text((96, 800),
-           "the unlocked source pages. No paraphrasing.",
+           "the analyst and into the writer. No paraphrasing.",
            font=font(26, italic=True), fill=FG_MUTED)
     d.text((96, 870),
            "Apache 2.0. Mukunda Katta, independent.",
@@ -102,19 +103,21 @@ def draw_outro(img, d):
 
 
 INTRO_NARRATION = (
-    "Gemini bright agent. A web research agent on Google Cloud Agent "
-    "Builder, wired to the Bright Data M C P server. Submission for the "
-    "Bright Data A I Agents Web Data Hackathon on lablab dot a i. What "
-    "follows is real footage of the deployed Cloud Run dashboard walking "
-    "the Bright Data tools and citing verbatim quotes from the live web."
+    "Gemini multi agent orchestra. A three agent supervisor on Vertex A I "
+    "Agent Builder. Researcher, analyst, writer, with verbatim handoffs "
+    "between every step. Submission for the Dorahacks Agents Without "
+    "Masters hackathon. What follows is real footage of the deployed "
+    "Cloud Run dashboard running the orchestra end to end on a single "
+    "question."
 )
 
 
 OUTRO_NARRATION = (
-    "Every quote you just saw was copied byte for byte from the unlocked "
-    "Anthropic page. The agent never paraphrases. Built on the A D K with "
-    "Gemini two point five Flash, wired to the Bright Data M C P server, "
-    "S E R P, Web Unlocker, and structured datasets. Apache two point zero. "
+    "Every quote you just saw was copied byte for byte by the researcher "
+    "out of a scraped vendor page, survived the analyst's scoring handoff, "
+    "and landed in the writer's evidence section unchanged. Built on the "
+    "A D K sequential agent pattern with Gemini two point five Flash, "
+    "wired to a Bright Data shaped M C P toolset. Apache two point zero. "
     "Thank you."
 )
 
