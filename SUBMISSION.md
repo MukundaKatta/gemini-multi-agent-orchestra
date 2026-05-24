@@ -1,11 +1,15 @@
-# lablab.ai submission package — gemini-multi-agent-orchestra
+# Submission package — gemini-multi-agent-orchestra
 
-Pre-filled fields for the **Web Data UNLOCKED Hackathon** (Bright Data),
-ready to paste into the lablab submission form once the application is
-approved and the submission portal opens on **May 25 2026 10:00 AM PDT**
-(deadline May 29 2026 5:00 PM PDT).
+**Primary target:** DoraHacks Agents Without Masters (deadline Jun 16 2026, $25K)
+**Cross-submission candidate:** lablab.ai Web Data UNLOCKED (May 29 2026) if multi-entry rules allow
 
-Event: https://lablab.ai/ai-hackathons/brightdata-ai-agents-web-data-hackathon
+The body of this file is written for either platform — both ask for
+the same project description, tags, repo URL, and demo. The "submission
+timeline" section at the bottom lists both deadlines.
+
+Event URLs:
+  - DoraHacks: https://dorahacks.io/hackathon/agents-without-masters
+  - lablab.ai: https://lablab.ai/ai-hackathons/brightdata-ai-agents-web-data-hackathon
 
 ## 📋 Basic Information
 
@@ -15,50 +19,64 @@ Event: https://lablab.ai/ai-hackathons/brightdata-ai-agents-web-data-hackathon
 
 **Short Description** (one sentence)
 
-    A Gemini 2.5 research analyst that walks Bright Data's MCP tools (SERP +
-    Web Unlocker + structured datasets) to answer plain-English research
-    questions with verbatim quotes and a confidence note.
+    A 3-agent supervisor pattern (researcher + analyst + writer) over the
+    Bright Data MCP server, built on Google Cloud Agent Builder ADK and
+    Gemini 2.5. Primary target: DoraHacks Agents Without Masters; eligible
+    as a Bright Data cross-submission if multi-entry is allowed.
 
 **Long Description**
 
-    gemini-multi-agent-orchestra treats every research question as a SERP → unlock →
-    cite loop. Ask "Anthropic Claude latest release notes 2026" and the agent
-    walks the Bright Data MCP tools:
+    A SequentialAgent supervisor ("orchestra_supervisor") delegates to
+    three LlmAgent sub-agents that hand off state through ADK's
+    output_key:
 
-    1. search_engine(query, engine) — pulls the top SERP results.
-    2. Pick the most authoritative source (prefer first-party).
-    3. scrape_page(url) — fetch the rendered page through the Web Unlocker
-       (anti-bot bypass, returns unlocked_by_brightdata: true).
-    4. extract_text(url, css_selector) — clean text for citation.
-    5. web_data_lookup(dataset, key) — if the question touches a structured
-       record (company / profile / product), pull the canonical dataset row.
+        orchestra_supervisor (SequentialAgent)
+        ├── researcher   → search_engine + scrape_page → writes research_notes
+        ├── analyst      → score_source                → writes scoring_log
+        └── writer       → (no tools)                  → composes final report
 
-    The agent answers in 5 labeled sections:
+    Each sub-agent has its own system prompt and its own job. Hand-offs
+    are verbatim: quotes the researcher scrapes survive byte-for-byte
+    through the analyst and into the writer's final EVIDENCE section.
 
-      ANSWER:     one or two sentences, every number/date/version copied
-                  verbatim from a tool result.
-      SOURCES:    bulleted list of the URLs the agent actually consulted.
-      KEY QUOTES: 2–4 verbatim quotes pulled from the scraped pages, each
-                  tagged with the source URL.
-      CONFIDENCE: high / medium / low, with a one-sentence reason tied to
-                  source quality and cross-source agreement.
-      NEXT STEP:  one concrete follow-up search.
+    Ask "Rank the top 3 AI coding agents launched in May 2026 by adoption
+    and cite their announcement URLs verbatim" and the orchestra:
 
-    Strict rule: every quantitative claim must come from a tool result. The
-    agent cites byte-for-byte; it never paraphrases inside KEY QUOTES, and
-    flags any page where unlocked_by_brightdata is false as a confidence
-    downgrade.
+    1. researcher runs search_engine() → 5 SERP results, picks the top 3
+       first-party announcement pages, runs scrape_page(url) on each,
+       writes verbatim text to research_notes.
+    2. analyst reads research_notes, calls score_source(url, score,
+       reason) 3 times — reason quotes the verbatim adoption number from
+       the scraped page (480k / 310k / 215k weekly active developers).
+    3. writer reads research_notes plus scoring_log, composes the final
+       report:
 
-    Built on Google Cloud Agent Builder (ADK) with Gemini 2.5 Flash on
-    Vertex AI, wired to Bright Data's MCP server. The repo ships a local
-    stub (canned SERPs + scraped pages, no Bright Data account required)
-    plus a one-env-var swap to the real @brightdata/mcp server.
+         ANSWER:        ranked list of the 3 coding agents.
+         EVIDENCE:      verbatim quotes from each scraped page, tagged
+                        with URL.
+         SCORING:       analyst's score plus reason per source.
+         HANDOFF TRACE: which sub-agent did what.
+
+    Why this fits Agents Without Masters: no central planner picks the
+    next step. The SequentialAgent shape encodes the workflow; each
+    sub-agent is autonomous within its lane and the hand-off is by state,
+    not by orchestrator interrupt. The orchestra is a working pattern
+    other teams can lift directly.
+
+    Tool surface is Bright Data MCP-shaped (same as the official
+    @brightdata/mcp npm package), so the same orchestra runs against the
+    real Bright Data account with one env-var swap (BRIGHTDATA_API_TOKEN).
+    The repo ships a local stub for demos with no account required.
+
+    Built on Google Cloud Agent Builder (ADK), Gemini 2.5 Flash on Vertex
+    AI, and the Bright Data MCP server. Apache 2.0.
 
 **Technology & Category Tags**
 
     python, gemini, gemini-2-5, vertex-ai, google-cloud-agent-builder,
-    agent-development-kit, mcp, model-context-protocol, bright-data,
-    bright-data-mcp, web-unlocker, serp-api, structured-datasets,
+    agent-development-kit, sequential-agent, multi-agent, supervisor,
+    mcp, model-context-protocol, bright-data, bright-data-mcp,
+    web-unlocker, serp-api, autonomous-agents, agents-without-masters,
     streamlit, google-cloud-run, apache-2
 
 ## 📸 Cover Image and Presentation
